@@ -4,10 +4,18 @@
       <h2 class="text-center mt-5 mb-5 kavoon">Find the mole</h2>
       <div class="p-lg-5">
         <div class="text-center">
-          <button type="submit" class="btn btn-color px-5 mb-5 w-100">
+          <button
+            type="submit"
+            (click)="redirectToCreateGame()"
+            class="btn btn-color px-5 mb-5 w-100"
+          >
             Create a game
           </button>
-          <button type="submit" class="btn btn-color px-5 mb-5 w-100">
+          <button
+            type="submit"
+            class="btn btn-color px-5 mb-5 w-100"
+            (click)="redirectToJoinGame()"
+          >
             Join a game
           </button>
         </div>

@@ -1,0 +1,33 @@
+<div class="container">
+  <div class="row">
+    <div class="col-md-6 offset-md-3">
+      <h2 class="text-center mt-5 mb-5 kavoon">Join a game</h2>
+      <div class="p-lg-5">
+        <div class="text-center">
+          <form [formGroup]="joinGameForm">
+            <input
+              type="text"
+              formControlName="name"
+              class="mb-5 form-control focus-ring focus-ring-light py-1 px-2 text-decoration-none border rounded-2"
+              placeholder="Username"
+            />
+            <input
+              type="text"
+              formControlName="roomName"
+              class="mb-5 form-control focus-ring focus-ring-light py-1 px-2 text-decoration-none border rounded-2"
+              placeholder="Game access code"
+            />
+            <button
+              type="submit"
+              class="btn btn-color px-5 mb-5 w-100"
+              [disabled]="joinGameForm.invalid"
+              (click)="joinRoom()"
+            >
+              Join a game
+            </button>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

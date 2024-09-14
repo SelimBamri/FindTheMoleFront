@@ -1,0 +1,42 @@
+<div class="container">
+  <div class="row">
+    <div class="col-md-6 offset-md-3">
+      <h2 class="text-center mt-5 mb-5 kavoon">Create a game</h2>
+      <div class="p-lg-5">
+        <div class="text-center">
+          <form [formGroup]="createGameForm">
+            <input
+              type="text"
+              formControlName="name"
+              class="mb-5 form-control focus-ring focus-ring-light py-1 px-2 text-decoration-none border rounded-2"
+              placeholder="Username"
+            />
+            <select
+              class="mb-5 form-select focus-ring focus-ring-light py-1 px-2 text-decoration-none border rounded-2"
+              aria-label="Default select example"
+              formControlName="capacity"
+            >
+              <option selected value="">Number of players</option>
+              <option value="3">Three</option>
+              <option value="4">Four</option>
+              <option value="5">Five</option>
+              <option value="6">Six</option>
+              <option value="7">Seven</option>
+              <option value="8">Eight</option>
+              <option value="9">Nine</option>
+              <option value="10">Ten</option>
+            </select>
+            <button
+              type="submit"
+              class="btn btn-color px-5 mb-5 w-100"
+              [disabled]="createGameForm.invalid"
+              (click)="createRoom()"
+            >
+              Create a game
+            </button>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
