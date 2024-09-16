@@ -1,5 +1,6 @@
 import { Component, inject, OnInit } from '@angular/core';
 import { GameService } from '../services/game.service';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-game-lobby',
@@ -12,10 +13,13 @@ export class GameLobbyComponent implements OnInit {
   remainingPlayers!: Number;
   roomName = localStorage.getItem('room');
   gameService = inject(GameService);
+  router = inject(Router);
   ngOnInit(): void {
     this.gameService.waitingFor$.subscribe((res) => {
       this.remainingPlayers = res;
-      console.log(this.remainingPlayers);
+      if (res == 0) {
+        this.router.navigate(['/game']);
+      }
     });
   }
 }

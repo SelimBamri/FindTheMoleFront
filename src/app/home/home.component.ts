@@ -1,4 +1,4 @@
-import { Component, inject } from '@angular/core';
+import { Component, inject, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 
 @Component({
@@ -8,7 +8,7 @@ import { Router } from '@angular/router';
   templateUrl: './home.component.html',
   styleUrl: './home.component.scss',
 })
-export class HomeComponent {
+export class HomeComponent implements OnInit {
   router = inject(Router);
 
   redirectToCreateGame() {
@@ -17,5 +17,8 @@ export class HomeComponent {
 
   redirectToJoinGame() {
     this.router.navigate(['/join-game']);
+  }
+  ngOnInit(): void {
+    localStorage.clear();
   }
 }
