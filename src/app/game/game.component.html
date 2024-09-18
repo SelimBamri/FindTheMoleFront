@@ -1,10 +1,93 @@
 <div class="container">
   <div class="row">
-    <div class="col-md-6 offset-md-3">
-      <h2 class="text-center mt-5 mb-5 kavoon">
-        You are
-        <span class="role"> @if (isMole) {The Mole} @else {Innocent} </span>
-      </h2>
+    <h2 class="text-center mt-5 mb-5 kavoon">The game has started</h2>
+    <div class="col-12 col-md-6">
+      <div class="suse mb-5">
+        <h5>
+          You are
+          <span class="role"> @if (isMole) {The Mole} @else {Innocent} </span>
+          @if (isMole) { You need to guess the location.} @else { You need to
+          find the mole.}
+        </h5>
+      </div>
+      <div class="suse mb-5">
+        <h5>You are playing with:</h5>
+        <ul class="row">
+          @for (player of players; track $index) { @if (player != currentPlayer)
+          {
+          <li class="col-4">{{ player }}</li>
+          } }
+        </ul>
+      </div>
+      <div class="suse mb-5">
+        <h5>The possible locations are:</h5>
+        <ul class="row">
+          @for (location of locations; track $index) {
+          <li class="col-4">{{ location }}</li>
+          }
+        </ul>
+      </div>
+      @if (isMole) {
+      <div class="suse mb-5">
+        <h5>Guess the location</h5>
+        <div class="row">
+          <div class="col-6">
+            <select
+              class="form-select focus-ring focus-ring-light py-1 px-2 text-decoration-none border rounded-2"
+              formControlName="capacity"
+            >
+              <option selected value="">locations</option>
+              @for (location of locations; track $index) {
+              <option value="{{ location }}">{{ location }}</option>
+              }
+            </select>
+          </div>
+          <div class="col-6">
+            <button type="submit" class="btn btn-color px-5 mb-5">Guess</button>
+          </div>
+        </div>
+      </div>
+      }
+    </div>
+    <div class="col-12 col-md-6">
+      <div class="d-flex justify-content-center container mb-3">
+        <div class="wrapper">
+          <div class="main">
+            <div class="px-2 scroll">messages</div>
+            <nav
+              class="navbar bg-white navbar-expand-sm d-flex justify-content-between"
+            >
+              <input
+                type="text number"
+                name="text"
+                class="form-control"
+                placeholder="Type a message..."
+              />
+              <div
+                class="icondiv d-flex justify-content-end align-content-center text-center ml-2"
+              >
+                <i class="fa fa-paperclip icon1"></i>
+                <i class="fa fa-arrow-circle-right icon2"></i>
+              </div>
+            </nav>
+          </div>
+        </div>
+      </div>
+      <div class="d-flex justify-content-center container">
+        <button
+          type="submit"
+          class="btn btn-color px-5 mb-3"
+          (click)="onVote()"
+        >
+          Vote request
+        </button>
+      </div>
+      <div class="d-flex justify-content-center container">
+        <h6 class="mb-5 suse">
+          Number of remaining votes :
+          <span class="role">{{ remainingVotes }}</span>
+        </h6>
+      </div>
     </div>
   </div>
 </div>

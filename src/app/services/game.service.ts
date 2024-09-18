@@ -9,9 +9,28 @@ import { BehaviorSubject } from 'rxjs';
 export class GameService {
   API_URL: string = 'https://localhost:7247';
   public waitingFor$ = new BehaviorSubject<Number>(10);
+  public remainingVotes$ = new BehaviorSubject<Number>(10);
   public isMole$ = new BehaviorSubject<boolean>(false);
+  public hasVoted$ = new BehaviorSubject<boolean>(false);
   public location$ = new BehaviorSubject<string | null>(null);
-  public players$ = new BehaviorSubject<any>(null);
+  public locations = [
+    'Airplane',
+    'Bank',
+    'Beach',
+    'Hospital',
+    'School',
+    'Restaurant',
+    'Train',
+    'Supermarket',
+    'Football Stadium',
+    'Park',
+    'Cinema',
+    'Hotel',
+    'Outer Space',
+    'Museum',
+    'Boat',
+  ];
+  public players$ = new BehaviorSubject<string[] | null>(null);
   router = inject(Router);
 
   public connection: signalR.HubConnection = new signalR.HubConnectionBuilder()
@@ -46,13 +65,27 @@ export class GameService {
       this.waitingFor$.next(waitingFor);
     });
 
-    this.connection.on('LoadMolePage', () => {
-      this.isMole$.next(true);
-    });
+    this.connection.on(
+      'LoadMolePage',
+      (players: string[], remainingVotes: number) => {
+        this.isMole$.next(true);
+        this.players$.next(players);
+        this.remainingVotes$.next(remainingVotes);
+      }
+    );
 
-    this.connection.on('LoadInnocentPage', (location: string) => {
-      this.location$.next(location);
-      this.isMole$.next(false);
+    this.connection.on(
+      'LoadInnocentPage',
+      (location: string, players: string[], remainingVotes: number) => {
+        this.location$.next(location);
+        this.isMole$.next(false);
+        this.players$.next(players);
+        this.remainingVotes$.next(remainingVotes);
+      }
+    );
+
+    this.connection.on('VoteRequest', (remainingVotes: number) => {
+      this.remainingVotes$.next(remainingVotes);
     });
 
     this.connection.on(
@@ -61,12 +94,17 @@ export class GameService {
         remainingPlayers: number,
         messages: any[],
         isMole: boolean,
-        location: string
+        location: string,
+        players: string[],
+        voted: boolean,
+        remainingVotes: number
       ) => {
         this.location$.next(location);
         this.waitingFor$.next(remainingPlayers);
         this.isMole$.next(isMole);
-        console.log(this.connection.connectionId);
+        this.players$.next(players);
+        this.hasVoted$.next(voted);
+        this.remainingVotes$.next(remainingVotes);
       }
     );
   }
@@ -81,5 +119,9 @@ export class GameService {
 
   reconnect(name: string, roomName: string) {
     return this.connection.invoke('Reconnect', { name, roomName });
+  }
+
+  requestVote(name: string, roomName: string) {
+    return this.connection.invoke('RequestVote', { name, roomName });
   }
 }
