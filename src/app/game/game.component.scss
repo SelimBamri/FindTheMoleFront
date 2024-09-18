@@ -63,6 +63,15 @@
   color: #3e3c3c;
 }
 
+.msg-me {
+  background-color: #76abae;
+  font-size: 11px;
+  padding: 5px;
+  border-radius: 5px;
+  font-weight: 500;
+  color: white;
+}
+
 .between {
   font-size: 8px;
   font-weight: 500;
@@ -89,18 +98,27 @@
   }
 }
 
-.icon1 {
-  color: #7c4dff !important;
-  font-size: 18px !important;
+.msg_send_btn {
+  background: #76abae none repeat scroll 0 0;
+  border: medium none;
+  border-radius: 50%;
+  margin-right: 0.5rem;
+  color: #fff;
   cursor: pointer;
+  font-size: 17px;
+  height: 33px;
+  width: 33px;
+  &:hover {
+    background: #05728f none repeat scroll 0 0;
+  }
 }
 
 .icon2 {
-  color: #512da8 !important;
+  color: #76abae !important;
   font-size: 18px !important;
   position: relative;
   left: 8px;
-  padding: 0px;
+
   cursor: pointer;
 }
 

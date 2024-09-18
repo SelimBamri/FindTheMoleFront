@@ -10,6 +10,7 @@ export class GameService {
   API_URL: string = 'https://localhost:7247';
   public waitingFor$ = new BehaviorSubject<Number>(10);
   public remainingVotes$ = new BehaviorSubject<Number>(10);
+  public messages$ = new BehaviorSubject<any[]>([]);
   public isMole$ = new BehaviorSubject<boolean>(false);
   public hasVoted$ = new BehaviorSubject<boolean>(false);
   public location$ = new BehaviorSubject<string | null>(null);
@@ -88,6 +89,10 @@ export class GameService {
       this.remainingVotes$.next(remainingVotes);
     });
 
+    this.connection.on('NewMessage', (messages) => {
+      this.messages$.next(messages);
+    });
+
     this.connection.on(
       'Refresh',
       (
@@ -105,6 +110,7 @@ export class GameService {
         this.players$.next(players);
         this.hasVoted$.next(voted);
         this.remainingVotes$.next(remainingVotes);
+        this.messages$.next(messages);
       }
     );
   }
@@ -123,5 +129,9 @@ export class GameService {
 
   requestVote(name: string, roomName: string) {
     return this.connection.invoke('RequestVote', { name, roomName });
+  }
+
+  sendMessage(name: string, roomName: string, content: string) {
+    return this.connection.invoke('SendMessage', { name, roomName }, content);
   }
 }

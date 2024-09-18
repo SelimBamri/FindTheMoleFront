@@ -53,22 +53,65 @@
       <div class="d-flex justify-content-center container mb-3">
         <div class="wrapper">
           <div class="main">
-            <div class="px-2 scroll">messages</div>
+            <div class="px-2 scroll">
+              <div class="text-center">
+                <span class="between">Game started</span>
+              </div>
+              @for (message of messages; track $index) { @if(message.sender ==
+              currentPlayer){
+              <div
+                class="d-flex align-items-center text-right justify-content-end"
+              >
+                <div class="pr-2">
+                  <span class="name">{{ message.sender }}</span>
+                  <p class="msg-me">{{ message.content }}</p>
+                </div>
+                <div>
+                  <img
+                    src="../../assets/images/spy.png"
+                    width="30"
+                    class="img1"
+                  />
+                </div>
+              </div>
+              } @else {
+              <div class="d-flex align-items-center">
+                <div class="text-left pr-1">
+                  <img
+                    src="../../assets/images/spy.png"
+                    width="30"
+                    class="img1"
+                  />
+                </div>
+                <div class="pr-2 pl-1">
+                  <span class="name">{{ message.sender }}</span>
+                  <p class="msg">
+                    {{ message.content }}
+                  </p>
+                </div>
+              </div>
+              } }
+            </div>
             <nav
               class="navbar bg-white navbar-expand-sm d-flex justify-content-between"
             >
               <input
+                (keydown.enter)="onSendMessage()"
+                [(ngModel)]="inputMessage"
                 type="text number"
                 name="text"
                 class="form-control"
+                style="width: 100%"
                 placeholder="Type a message..."
               />
-              <div
-                class="icondiv d-flex justify-content-end align-content-center text-center ml-2"
+
+              <button
+                class="msg_send_btn"
+                type="button"
+                (click)="onSendMessage()"
               >
-                <i class="fa fa-paperclip icon1"></i>
-                <i class="fa fa-arrow-circle-right icon2"></i>
-              </div>
+                <fa-icon [icon]="faPaperPlane" class="icon" />
+              </button>
             </nav>
           </div>
         </div>
