@@ -1,0 +1,17 @@
+.role {
+  color: #76abae;
+}
+
+.custom-radio .form-check-input:checked {
+  background-color: #76abae;
+  border-color: #76abae;
+}
+
+.btn-color {
+  background-color: #76abae;
+  color: #eeeeee;
+  font-weight: 700;
+  &:hover {
+    background-color: #8ac9cc;
+  }
+}

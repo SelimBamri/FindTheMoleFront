@@ -1,0 +1,48 @@
+<div class="container">
+  <div class="row">
+    <div class="col-md-6 offset-md-3">
+      <h2 class="text-center mt-5 mb-5 kavoon">Time to vote</h2>
+      <div class="p-lg-5">
+        <div class="suse mb-3">
+          <h5>Vote for who you think the mole is</h5>
+        </div>
+        <form [formGroup]="voteForm" class="suse">
+          <h6 class="mb-5">
+            Number of remaining votes:
+            <span class="role">{{ remainingVotes }} </span>
+          </h6>
+          <h5 class="mb-3">List of players</h5>
+          @for (player of players; track $index) {
+          <div class="form-check custom-radio">
+            <label class="form-check-label">
+              {{ player }}
+            </label>
+            <input
+              formControlName="votedFor"
+              class="form-check-input focus-ring focus-ring-info"
+              type="radio"
+              value="{{ player }}"
+            />
+          </div>
+          }
+          <div class="d-flex justify-content-center container">
+            <button
+              (click)="onVote()"
+              class="btn btn-color px-5 mb-3"
+              [disabled]="hasVoted"
+            >
+              Vote
+            </button>
+          </div>
+        </form>
+        @if (vf) {
+        <div class="d-flex justify-content-center container mt-5">
+          <h2>
+            You voted for : <span class="role">{{ vf }}</span>
+          </h2>
+        </div>
+        }
+      </div>
+    </div>
+  </div>
+</div>

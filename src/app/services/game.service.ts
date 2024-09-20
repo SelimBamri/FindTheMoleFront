@@ -10,10 +10,12 @@ export class GameService {
   API_URL: string = 'https://localhost:7247';
   public waitingFor$ = new BehaviorSubject<Number>(10);
   public remainingVotes$ = new BehaviorSubject<Number>(10);
+  public finalRemainingVotes$ = new BehaviorSubject<Number>(10);
   public messages$ = new BehaviorSubject<any[]>([]);
   public isMole$ = new BehaviorSubject<boolean>(false);
   public hasVoted$ = new BehaviorSubject<boolean>(false);
   public location$ = new BehaviorSubject<string | null>(null);
+  public votedFor$ = new BehaviorSubject<string | null>(null);
   public locations = [
     'Airplane',
     'Bank',
@@ -68,7 +70,7 @@ export class GameService {
 
     this.connection.on(
       'LoadMolePage',
-      (players: string[], remainingVotes: number) => {
+      (players: string[], remainingVotes: Number) => {
         this.isMole$.next(true);
         this.players$.next(players);
         this.remainingVotes$.next(remainingVotes);
@@ -84,6 +86,11 @@ export class GameService {
         this.remainingVotes$.next(remainingVotes);
       }
     );
+
+    this.connection.on('VotePage', (remainingVotes: number) => {
+      this.finalRemainingVotes$.next(remainingVotes);
+      this.router.navigate(['/vote']);
+    });
 
     this.connection.on('VoteRequest', (remainingVotes: number) => {
       this.remainingVotes$.next(remainingVotes);
@@ -101,18 +108,31 @@ export class GameService {
         isMole: boolean,
         location: string,
         players: string[],
-        voted: boolean,
-        remainingVotes: number
+        hasVoted: boolean,
+        remainingVotes: number,
+        remainingFinalVotes: number,
+        vFor: string
       ) => {
         this.location$.next(location);
         this.waitingFor$.next(remainingPlayers);
         this.isMole$.next(isMole);
         this.players$.next(players);
-        this.hasVoted$.next(voted);
+        this.hasVoted$.next(hasVoted);
         this.remainingVotes$.next(remainingVotes);
         this.messages$.next(messages);
+        this.finalRemainingVotes$.next(remainingFinalVotes);
+        this.votedFor$.next(vFor);
       }
     );
+
+    this.connection.on('NewVote', (remainingVotes: number) => {
+      this.finalRemainingVotes$.next(remainingVotes);
+    });
+
+    this.connection.on('Voted', (vFor: string) => {
+      this.hasVoted$.next(true);
+      this.votedFor$.next(vFor);
+    });
   }
 
   public async createRoom(name: string, roomName: string, capacity: number) {
@@ -133,5 +153,9 @@ export class GameService {
 
   sendMessage(name: string, roomName: string, content: string) {
     return this.connection.invoke('SendMessage', { name, roomName }, content);
+  }
+
+  vote(name: string, roomName: string, votedFor: string) {
+    return this.connection.invoke('Vote', { name, roomName }, votedFor);
   }
 }

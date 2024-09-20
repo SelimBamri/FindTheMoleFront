@@ -30,11 +30,10 @@
       @if (isMole) {
       <div class="suse mb-5">
         <h5>Guess the location</h5>
-        <div class="row">
+        <form action="" class="row">
           <div class="col-6">
             <select
               class="form-select focus-ring focus-ring-light py-1 px-2 text-decoration-none border rounded-2"
-              formControlName="capacity"
             >
               <option selected value="">locations</option>
               @for (location of locations; track $index) {
@@ -45,8 +44,12 @@
           <div class="col-6">
             <button type="submit" class="btn btn-color px-5 mb-5">Guess</button>
           </div>
-        </div>
+        </form>
       </div>
+      } @else {
+      <h5>
+        The location for this game is <span class="role"> {{ location }}</span>
+      </h5>
       }
     </div>
     <div class="col-12 col-md-6">

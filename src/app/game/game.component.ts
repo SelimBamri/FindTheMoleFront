@@ -53,6 +53,7 @@ export class GameComponent implements OnInit {
         localStorage.getItem('room')!,
         this.inputMessage
       );
+      this.inputMessage = '';
     }
   }
 }
