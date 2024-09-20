@@ -2,16 +2,24 @@ import { Component, inject, OnInit } from '@angular/core';
 import { GameService } from '../services/game.service';
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 import { faPaperPlane } from '@fortawesome/free-solid-svg-icons';
-import { FormsModule } from '@angular/forms';
+import {
+  FormBuilder,
+  FormGroup,
+  FormsModule,
+  ReactiveFormsModule,
+  Validators,
+} from '@angular/forms';
 
 @Component({
   selector: 'app-game',
   standalone: true,
-  imports: [FontAwesomeModule, FormsModule],
+  imports: [FontAwesomeModule, FormsModule, ReactiveFormsModule],
   templateUrl: './game.component.html',
   styleUrl: './game.component.scss',
 })
 export class GameComponent implements OnInit {
+  guessForm!: FormGroup;
+  fb = inject(FormBuilder);
   faPaperPlane = faPaperPlane;
   inputMessage!: string;
   isMole!: boolean;
@@ -24,6 +32,9 @@ export class GameComponent implements OnInit {
   messages!: any[] | null;
 
   ngOnInit(): void {
+    this.guessForm = this.fb.group({
+      guessedLocation: ['', Validators.required],
+    });
     this.currentPlayer = localStorage.getItem('user')!;
     this.gameService.isMole$.subscribe((res) => {
       this.isMole = res;
@@ -43,6 +54,15 @@ export class GameComponent implements OnInit {
     this.gameService.requestVote(
       localStorage.getItem('user')!,
       localStorage.getItem('room')!
+    );
+  }
+
+  onGuess() {
+    const guessedLocation = this.guessForm.value.guessedLocation;
+    this.gameService.guess(
+      localStorage.getItem('user')!,
+      localStorage.getItem('room')!,
+      guessedLocation
     );
   }
 

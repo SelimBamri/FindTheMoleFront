@@ -21,6 +21,7 @@ export class CreateGameComponent {
   router = inject(Router);
   gameService = inject(GameService);
   ngOnInit() {
+    localStorage.clear();
     this.createGameForm = this.fb.group({
       name: ['', Validators.required],
       capacity: ['', Validators.required],

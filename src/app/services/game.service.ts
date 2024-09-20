@@ -15,7 +15,11 @@ export class GameService {
   public isMole$ = new BehaviorSubject<boolean>(false);
   public hasVoted$ = new BehaviorSubject<boolean>(false);
   public location$ = new BehaviorSubject<string | null>(null);
+  public guessedLocation$ = new BehaviorSubject<string | null>(null);
   public votedFor$ = new BehaviorSubject<string | null>(null);
+  public voteResult$ = new BehaviorSubject<any[]>([]);
+  public mole$ = new BehaviorSubject<string | null>(null);
+  public result$ = new BehaviorSubject<Number>(-1);
   public locations = [
     'Airplane',
     'Bank',
@@ -79,11 +83,27 @@ export class GameService {
 
     this.connection.on(
       'LoadInnocentPage',
-      (location: string, players: string[], remainingVotes: number) => {
+      (location: string, players: string[], remainingVotes: Number) => {
         this.location$.next(location);
         this.isMole$.next(false);
         this.players$.next(players);
         this.remainingVotes$.next(remainingVotes);
+      }
+    );
+
+    this.connection.on(
+      'Guessed',
+      (
+        result: Number,
+        mole: string,
+        location: string,
+        guessedLocation: string
+      ) => {
+        this.result$.next(result);
+        this.mole$.next(mole);
+        this.location$.next(location);
+        this.guessedLocation$.next(guessedLocation);
+        this.router.navigate(['game-over']);
       }
     );
 
@@ -133,6 +153,16 @@ export class GameService {
       this.hasVoted$.next(true);
       this.votedFor$.next(vFor);
     });
+
+    this.connection.on(
+      'VoteOver',
+      (result: Number, mole: string, location: string, voteResult: any[]) => {
+        this.result$.next(result);
+        this.mole$.next(mole);
+        this.location$.next(location), this.voteResult$.next(voteResult);
+        this.router.navigate(['game-over']);
+      }
+    );
   }
 
   public async createRoom(name: string, roomName: string, capacity: number) {
@@ -157,5 +187,9 @@ export class GameService {
 
   vote(name: string, roomName: string, votedFor: string) {
     return this.connection.invoke('Vote', { name, roomName }, votedFor);
+  }
+
+  guess(name: string, roomName: string, guessedLocation: string) {
+    return this.connection.invoke('Guess', { name, roomName }, guessedLocation);
   }
 }

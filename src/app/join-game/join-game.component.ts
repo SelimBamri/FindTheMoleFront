@@ -1,4 +1,4 @@
-import { Component, inject } from '@angular/core';
+import { Component, inject, OnInit } from '@angular/core';
 import {
   FormBuilder,
   FormGroup,
@@ -15,12 +15,13 @@ import { GameService } from '../services/game.service';
   templateUrl: './join-game.component.html',
   styleUrl: './join-game.component.scss',
 })
-export class JoinGameComponent {
+export class JoinGameComponent implements OnInit {
   joinGameForm!: FormGroup;
   fb = inject(FormBuilder);
   router = inject(Router);
   gameService = inject(GameService);
   ngOnInit() {
+    localStorage.clear();
     this.joinGameForm = this.fb.group({
       name: ['', Validators.required],
       roomName: ['', Validators.required],

@@ -30,19 +30,28 @@
       @if (isMole) {
       <div class="suse mb-5">
         <h5>Guess the location</h5>
-        <form action="" class="row">
+        <form class="row" [formGroup]="guessForm">
           <div class="col-6">
             <select
+              formControlName="guessedLocation"
               class="form-select focus-ring focus-ring-light py-1 px-2 text-decoration-none border rounded-2"
             >
               <option selected value="">locations</option>
               @for (location of locations; track $index) {
-              <option value="{{ location }}">{{ location }}</option>
+              <option [value]="location">
+                {{ location }}
+              </option>
               }
             </select>
           </div>
           <div class="col-6">
-            <button type="submit" class="btn btn-color px-5 mb-5">Guess</button>
+            <button
+              type="submit"
+              (click)="onGuess()"
+              class="btn btn-color px-5 mb-5"
+            >
+              Guess
+            </button>
           </div>
         </form>
       </div>
