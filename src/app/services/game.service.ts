@@ -19,6 +19,7 @@ export class GameService {
   public votedFor$ = new BehaviorSubject<string | null>(null);
   public voteResult$ = new BehaviorSubject<any[]>([]);
   public mole$ = new BehaviorSubject<string | null>(null);
+  public message$ = new BehaviorSubject<string | null>(null);
   public result$ = new BehaviorSubject<Number>(-1);
   public locations = [
     'Airplane',
@@ -68,6 +69,8 @@ export class GameService {
     this.connection.on('GameLobby', (waitingFor: Number) => {
       if (waitingFor == 0) {
         this.router.navigate(['/game']);
+      } else {
+        this.router.navigate(['/lobby']);
       }
       this.waitingFor$.next(waitingFor);
     });
@@ -90,6 +93,21 @@ export class GameService {
         this.remainingVotes$.next(remainingVotes);
       }
     );
+
+    this.connection.on('NameTaken', () => {
+      localStorage.clear();
+      this.message$.next('This username is taken!');
+    });
+
+    this.connection.on('FullGame', () => {
+      localStorage.clear();
+      this.message$.next('This game is full!');
+    });
+
+    this.connection.on('GameDoesntExist', () => {
+      localStorage.clear();
+      this.message$.next("This game doesn't exist!");
+    });
 
     this.connection.on(
       'Guessed',
@@ -170,6 +188,8 @@ export class GameService {
   }
 
   public async joinRoom(name: string, roomName: string) {
+    localStorage.setItem('user', name);
+    localStorage.setItem('room', roomName);
     return this.connection.invoke('JoinRoom', { name, roomName });
   }
 

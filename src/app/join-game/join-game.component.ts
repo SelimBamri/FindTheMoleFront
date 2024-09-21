@@ -19,9 +19,11 @@ export class JoinGameComponent implements OnInit {
   joinGameForm!: FormGroup;
   fb = inject(FormBuilder);
   router = inject(Router);
+  message!: string | null;
   gameService = inject(GameService);
   ngOnInit() {
     localStorage.clear();
+    this.gameService.message$.subscribe((res) => (this.message = res));
     this.joinGameForm = this.fb.group({
       name: ['', Validators.required],
       roomName: ['', Validators.required],
@@ -30,15 +32,6 @@ export class JoinGameComponent implements OnInit {
 
   joinRoom() {
     const { name, roomName } = this.joinGameForm.value;
-    this.gameService
-      .joinRoom(name, roomName)
-      .then(() => {
-        localStorage.setItem('user', name);
-        localStorage.setItem('room', roomName);
-        this.router.navigate(['/lobby']);
-      })
-      .catch((err) => {
-        console.log(err);
-      });
+    this.gameService.joinRoom(name, roomName);
   }
 }
