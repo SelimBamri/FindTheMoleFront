@@ -9,11 +9,12 @@ import {
   ReactiveFormsModule,
   Validators,
 } from '@angular/forms';
+import { NgIf } from '@angular/common';
 
 @Component({
   selector: 'app-game',
   standalone: true,
-  imports: [FontAwesomeModule, FormsModule, ReactiveFormsModule],
+  imports: [FontAwesomeModule, FormsModule, ReactiveFormsModule, NgIf],
   templateUrl: './game.component.html',
   styleUrl: './game.component.scss',
 })
@@ -30,6 +31,7 @@ export class GameComponent implements OnInit {
   remainingVotes!: Number | null;
   gameService = inject(GameService);
   messages!: any[] | null;
+  loading = true;
 
   ngOnInit(): void {
     this.guessForm = this.fb.group({
@@ -48,6 +50,7 @@ export class GameComponent implements OnInit {
     );
     this.gameService.messages$.subscribe((res) => (this.messages = res));
     this.locations = this.gameService.locations;
+    this.loading = false;
   }
 
   onVote() {

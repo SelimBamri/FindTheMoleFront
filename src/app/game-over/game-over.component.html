@@ -1,76 +1,88 @@
 <div class="container text-center">
   <div class="row">
-    <div class="col-md-6 offset-md-3">
-      @if (result == 4) {
-      <h2 class="text-center mt-5 mb-5 kavoon">
-        The mole guessed the wrong location,
-        <span class="coloured-text"> The team wins!</span>
-      </h2>
-      } @else if (result == 3) {
-      <h2 class="text-center mt-5 mb-5 kavoon">
-        The mole has correctly guessed the location,
-        <span class="coloured-text"> The mole wins!</span>
-      </h2>
-      } @else if (result == 2) {
-      <h2 class="text-center mt-5 mb-5 kavoon">
-        The mole was caught, <span class="coloured-text"> The team wins!</span>
-      </h2>
-      } @else if (result == 1) {
-      <h2 class="text-center mt-5 mb-5 kavoon">
-        You voted for the wrong person,
-        <span class="coloured-text">The mole wins!</span>
-      </h2>
-      } @else if (result == 0) {
-      <h2 class="text-center mt-5 mb-5 kavoon">
-        There was a tie, <span class="coloured-text">The mole wins!</span>
-      </h2>
-      }
-      <div class="p-lg-5">
-        <div class="suse mb-5">
-          <h5>
-            The mole is: <span class="coloured-text">{{ mole }}</span>
-          </h5>
-        </div>
-        <div class="suse mb-5">
-          <h5>
-            The game location is:
-            <span class="coloured-text">{{ location }} </span>
-          </h5>
-        </div>
-        @if (result == 3 || result == 4) {
-        <div class="suse mb-5">
-          <h5>
-            The mole guessed:
-            <span class="coloured-text">{{ guessedLocation }}</span>
-          </h5>
-        </div>
-        } @else{
-        <div class="suse mb-5">
-          <h5>The vote went as follows:</h5>
-          <ul>
-            @for (player of voteResult; track $index) {
-            <li>
-              {{ player.name }}:
-              <span class="coloured-text">{{ player.numberOfVotes }}</span>
-              votes
-            </li>
-            }
-          </ul>
-        </div>
+    <ng-container *ngIf="!loading; else loadingTemplate">
+      <div class="col-md-6 offset-md-3">
+        @if (result == 4) {
+        <h2 class="text-center mt-5 mb-5 kavoon">
+          The mole guessed the wrong location,
+          <span class="coloured-text"> The team wins!</span>
+        </h2>
+        } @else if (result == 3) {
+        <h2 class="text-center mt-5 mb-5 kavoon">
+          The mole has correctly guessed the location,
+          <span class="coloured-text"> The mole wins!</span>
+        </h2>
+        } @else if (result == 2) {
+        <h2 class="text-center mt-5 mb-5 kavoon">
+          The mole was caught,
+          <span class="coloured-text"> The team wins!</span>
+        </h2>
+        } @else if (result == 1) {
+        <h2 class="text-center mt-5 mb-5 kavoon">
+          You voted for the wrong person,
+          <span class="coloured-text">The mole wins!</span>
+        </h2>
+        } @else if (result == 0) {
+        <h2 class="text-center mt-5 mb-5 kavoon">
+          There was a tie, <span class="coloured-text">The mole wins!</span>
+        </h2>
         }
-        <div class="row">
-          <div class="col-12 col-md-6">
-            <button class="btn btn-color px-5 mb-5" (click)="onNewGame()">
-              Create a new game
-            </button>
+        <div class="p-lg-5">
+          <div class="suse mb-5">
+            <h5>
+              The mole is: <span class="coloured-text">{{ mole }}</span>
+            </h5>
           </div>
-          <div class="col-12 col-md-6">
-            <button class="btn btn-color px-5 mb-5" (click)="onJoinNewGame()">
-              Join a new game
-            </button>
+          <div class="suse mb-5">
+            <h5>
+              The game location is:
+              <span class="coloured-text">{{ location }} </span>
+            </h5>
+          </div>
+          @if (result == 3 || result == 4) {
+          <div class="suse mb-5">
+            <h5>
+              The mole guessed:
+              <span class="coloured-text">{{ guessedLocation }}</span>
+            </h5>
+          </div>
+          } @else{
+          <div class="suse mb-5">
+            <h5>The vote went as follows:</h5>
+            <ul>
+              @for (player of voteResult; track $index) {
+              <li>
+                {{ player.name }}:
+                <span class="coloured-text">{{ player.numberOfVotes }}</span>
+                votes
+              </li>
+              }
+            </ul>
+          </div>
+          }
+          <div class="row">
+            <div class="col-12 col-md-6">
+              <button class="btn btn-color px-5 mb-5" (click)="onNewGame()">
+                Create a new game
+              </button>
+            </div>
+            <div class="col-12 col-md-6">
+              <button class="btn btn-color px-5 mb-5" (click)="onJoinNewGame()">
+                Join a new game
+              </button>
+            </div>
           </div>
         </div>
       </div>
-    </div>
+    </ng-container>
+
+    <ng-template #loadingTemplate>
+      <div class="text-center">
+        <div class="spinner-border" role="status">
+          <span class="sr-only">Loading...</span>
+        </div>
+        <h5 class="mt-3">Loading data...</h5>
+      </div>
+    </ng-template>
   </div>
 </div>

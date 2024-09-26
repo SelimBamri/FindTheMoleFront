@@ -1,11 +1,12 @@
 import { Component, inject, OnInit } from '@angular/core';
 import { GameService } from '../services/game.service';
 import { Router } from '@angular/router';
+import { NgIf } from '@angular/common';
 
 @Component({
   selector: 'app-game-over',
   standalone: true,
-  imports: [],
+  imports: [NgIf],
   templateUrl: './game-over.component.html',
   styleUrl: './game-over.component.scss',
 })
@@ -16,6 +17,7 @@ export class GameOverComponent implements OnInit {
   mole!: string | null;
   location!: string | null;
   guessedLocation!: string | null;
+  loading = true;
   voteResult!: any[];
   ngOnInit(): void {
     if (!localStorage.getItem('user')) {
@@ -28,6 +30,7 @@ export class GameOverComponent implements OnInit {
       (res) => (this.guessedLocation = res)
     );
     this.gameService.voteResult$.subscribe((res) => (this.voteResult = res));
+    this.loading = false;
     localStorage.clear();
   }
 

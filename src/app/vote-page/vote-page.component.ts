@@ -6,11 +6,12 @@ import {
   ReactiveFormsModule,
   Validators,
 } from '@angular/forms';
+import { NgIf } from '@angular/common';
 
 @Component({
   selector: 'app-vote-page',
   standalone: true,
-  imports: [ReactiveFormsModule],
+  imports: [ReactiveFormsModule, NgIf],
   templateUrl: './vote-page.component.html',
   styleUrl: './vote-page.component.scss',
 })
@@ -21,6 +22,7 @@ export class VotePageComponent implements OnInit {
   remainingVotes!: Number | null;
   hasVoted!: boolean;
   vf!: string | null;
+  loading = true;
   gameService = inject(GameService);
   ngOnInit(): void {
     this.voteForm = this.fb.group({
@@ -38,6 +40,7 @@ export class VotePageComponent implements OnInit {
     this.gameService.votedFor$.subscribe((res) => {
       this.vf = res;
     });
+    this.loading = false;
   }
   onVote() {
     const votedFor = this.voteForm.value['votedFor'];
