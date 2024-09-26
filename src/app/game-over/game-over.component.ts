@@ -30,4 +30,12 @@ export class GameOverComponent implements OnInit {
     this.gameService.voteResult$.subscribe((res) => (this.voteResult = res));
     localStorage.clear();
   }
+
+  onNewGame() {
+    this.router.navigate(['new-game']);
+  }
+
+  onJoinNewGame() {
+    this.router.navigate(['join-game']);
+  }
 }

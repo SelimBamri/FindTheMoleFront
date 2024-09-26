@@ -7,7 +7,8 @@ import { BehaviorSubject } from 'rxjs';
   providedIn: 'root',
 })
 export class GameService {
-  API_URL: string = 'https://localhost:7247';
+  API_URL: string =
+    'https://findthemole-eqgzggefbnhjhthc.francecentral-01.azurewebsites.net/';
   public waitingFor$ = new BehaviorSubject<Number>(10);
   public remainingVotes$ = new BehaviorSubject<Number>(10);
   public finalRemainingVotes$ = new BehaviorSubject<Number>(10);
