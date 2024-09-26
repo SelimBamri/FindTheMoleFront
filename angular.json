@@ -17,7 +17,7 @@
         "build": {
           "builder": "@angular-devkit/build-angular:application",
           "options": {
-            "outputPath": "dist/find-the-mole-front",
+            "outputPath": "dist/FindTheMoleFront",
             "index": "src/index.html",
             "browser": "src/main.ts",
             "polyfills": ["zone.js"],
@@ -28,7 +28,8 @@
               "node_modules/bootstrap/dist/css/bootstrap.css",
               "src/styles.scss"
             ],
-            "scripts": ["node_modules/bootstrap/dist/js/bootstrap.js"]
+            "scripts": ["node_modules/bootstrap/dist/js/bootstrap.js"],
+            "baseHref": "."
           },
           "configurations": {
             "production": {
