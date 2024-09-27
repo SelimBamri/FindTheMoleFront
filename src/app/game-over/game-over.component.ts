@@ -35,10 +35,14 @@ export class GameOverComponent implements OnInit {
   }
 
   onNewGame() {
-    this.router.navigate(['new-game']);
+    this.router.navigate(['new-game']).then(() => {
+      window.location.reload();
+    });
   }
 
   onJoinNewGame() {
-    this.router.navigate(['join-game']);
+    this.router.navigate(['join-game']).then(() => {
+      window.location.reload();
+    });
   }
 }
