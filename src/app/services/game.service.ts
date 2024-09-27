@@ -135,8 +135,10 @@ export class GameService {
       this.remainingVotes$.next(remainingVotes);
     });
 
-    this.connection.on('NewMessage', (messages) => {
-      this.messages$.next(messages);
+    this.connection.on('NewMessage', (newMessage) => {
+      const currentMessages = this.messages$.getValue();
+      const updatedMessages = [...currentMessages, newMessage];
+      this.messages$.next(updatedMessages);
     });
 
     this.connection.on(
