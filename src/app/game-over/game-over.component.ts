@@ -32,19 +32,6 @@ export class GameOverComponent implements OnInit {
     this.gameService.voteResult$.subscribe((res) => (this.voteResult = res));
     this.loading = false;
     localStorage.clear();
-    this.gameService.waitingFor$.next(10);
-    this.gameService.remainingVotes$.next(10);
-    this.gameService.finalRemainingVotes$.next(10);
-    this.gameService.messages$.next([]);
-    this.gameService.isMole$.next(false);
-    this.gameService.hasVoted$.next(false);
-    this.gameService.location$.next(null);
-    this.gameService.guessedLocation$.next(null);
-    this.gameService.votedFor$.next(null);
-    this.gameService.voteResult$.next([]);
-    this.gameService.mole$.next(null);
-    this.gameService.message$.next(null);
-    this.gameService.result$.next(-1);
   }
 
   onNewGame() {
