@@ -136,9 +136,9 @@ export class GameService {
     });
 
     this.connection.on('NewMessage', (newMessage) => {
-      const currentMessages = this.messages$.getValue();
-      const updatedMessages = [...currentMessages, newMessage];
-      this.messages$.next(updatedMessages);
+      var messages = this.messages$.getValue();
+      messages.push(newMessage);
+      this.messages$.next(messages);
     });
 
     this.connection.on(
